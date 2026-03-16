@@ -32,6 +32,7 @@ public class Tasks {
 	private static final String MAPA = "mapa";
 	private static final String STATUS = "estado";
 	private static final String SIMULA = "simula";
+	private static final String ESTATISTICAS = "estatisticas";
 
 	/**
 	 * This task also tests the fighting element of a round of three shots
@@ -65,6 +66,10 @@ public class Tasks {
 				case MAPA:
 					if (myFleet != null)
 						game.printMyBoard(false, true);
+					break;
+				case ESTATISTICAS:
+					if (game != null)
+						((Game) game).showStatistics();
 					break;
 				case RAJADA:
 					if (game != null) {
@@ -107,6 +112,7 @@ public class Tasks {
 				default:
 					System.out.println("Que comando é esse??? Repete ...");
 			}
+
 			System.out.print("> ");
 			command = in.next();
 		}
@@ -124,6 +130,7 @@ public class Tasks {
 		System.out.println("- " + STATUS + ": Mostra o status atual da frota.)");
 		System.out.println("- " + MAPA + ": Exibe o mapa da frota.");
 		System.out.println("- " + RAJADA + ": Realiza uma rajada de disparos.");
+		System.out.println("- " + ESTATISTICAS + ": Mostra estatísticas detalhadas do jogo.");
 		System.out.println("- " + SIMULA + ": Simula um jogo completo.");
 		System.out.println("- " + TIROS + ": Lista os tiros válidos realizados (* = tiro em navio, o = tiro na água)");
 		System.out.println("- " + DESISTIR + ": Encerra o jogo.");
