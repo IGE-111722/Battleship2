@@ -440,4 +440,35 @@ public class Game implements IGame
 			System.out.println("| Maldito sejas, Java Sparrow, eu voltarei, glub glub glub ... |");
 			System.out.println("+--------------------------------------------------------------+");
 	}
+
+	public int getTotalShots() {
+		return alienMoves.size() * NUMBER_SHOTS;
+	}
+
+	public int getMissShots() {
+		return getTotalShots() - countHits - countInvalidShots - countRepeatedShots;
+	}
+
+	public double getAccuracy() {
+		int validShots = getTotalShots() - countInvalidShots - countRepeatedShots;
+		if (validShots <= 0) {
+			return 0.0;
+		}
+		return (double) countHits / validShots * 100.0;
+	}
+
+	public void showStatistics() {
+		System.out.println();
+		System.out.println("=============== ESTATÍSTICAS DO JOGO ===============");
+		System.out.println("Total de tiros: " + getTotalShots());
+		System.out.println("Acertos: " + getHits());
+		System.out.println("Falhas: " + getMissShots());
+		System.out.println("Tiros inválidos: " + getInvalidShots());
+		System.out.println("Tiros repetidos: " + getRepeatedShots());
+		System.out.println("Navios afundados: " + getSunkShips());
+		System.out.println("Navios restantes: " + getRemainingShips());
+		System.out.printf("Precisão: %.2f%%%n", getAccuracy());
+		System.out.println("====================================================");
+		System.out.println();
+	}
 }
