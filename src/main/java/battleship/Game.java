@@ -197,6 +197,50 @@ public class Game implements IGame
 	{
 		return myMoves;
 	}
+	public void undoLastMove() {
+		if (alienMoves.isEmpty()) {
+			System.out.println("Não há jogadas para desfazer.");
+			return;
+		}
+
+		IMove lastMove = alienMoves.remove(alienMoves.size() - 1);
+		List<IPosition> currentMoveShots = new ArrayList<>();
+
+		for (IPosition pos : lastMove.getShots()) {
+			if (!pos.isInside()) {
+				countInvalidShots--;
+				currentMoveShots.add(pos);
+				continue;
+			}
+
+			boolean repeatedInCurrentMove = currentMoveShots.contains(pos);
+			boolean repeatedInPreviousMoves = repeatedShot(pos);
+
+			if (repeatedInCurrentMove || repeatedInPreviousMoves) {
+				countRepeatedShots--;
+				currentMoveShots.add(pos);
+				continue;
+			}
+
+			IShip ship = myFleet.shipAt(pos);
+			if (ship != null) {
+				boolean wasSunk = !ship.stillFloating();
+
+				((Position) pos).unshoot();
+				countHits--;
+
+				if (wasSunk) {
+					countSinks--;
+				}
+			}
+
+			currentMoveShots.add(pos);
+		}
+
+		moveNumber--;
+
+		System.out.println("Última rajada desfeita com sucesso.");
+	}
 
 	/**
 	 * Simulates a random firing action by the enemy, generating a set of unique shot coordinates

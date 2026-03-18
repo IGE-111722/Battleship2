@@ -52,6 +52,11 @@ public class Position implements IPosition {
 		this.isHit = false;
 	}
 
+	public void unshoot()
+	{
+		this.isHit = false;
+	}
+
 	/**
 	 * Constructs a new Position with the specified row and column.
 	 * By default, the position is not occupied and not hit.

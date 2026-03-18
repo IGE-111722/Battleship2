@@ -23,6 +23,7 @@ public class Tasks {
 	/**
 	 * Strings to be used by the user
 	 */
+	private static final String UNDO = "undo";
 	private static final String AJUDA = "ajuda";
 	private static final String GERAFROTA = "gerafrota";
 	private static final String LEFROTA = "lefrota";
@@ -49,6 +50,10 @@ public class Tasks {
 		while (!command.equals(DESISTIR)) {
 
 			switch (command) {
+				case UNDO:
+					if (game != null)
+						((Game) game).undoLastMove();
+					break;
 				case GERAFROTA:
 					myFleet = Fleet.createRandom();
 					game = new Game(myFleet);
@@ -126,6 +131,7 @@ public class Tasks {
 		System.out.println("======================= AJUDA DO MENU =========================");
 		System.out.println("Digite um dos comandos abaixo para interagir com o jogo:");
 		System.out.println("- " + GERAFROTA + ": Gera uma frota aleatória de navios.");
+		System.out.println("- " + UNDO + ": Desfaz a última rajada efetuada.");
 		System.out.println("- " + LEFROTA + ": Permite criar e carregar uma frota personalizada.");
 		System.out.println("- " + STATUS + ": Mostra o status atual da frota.)");
 		System.out.println("- " + MAPA + ": Exibe o mapa da frota.");
