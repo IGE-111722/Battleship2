@@ -23,6 +23,8 @@ public class Tasks {
 	/**
 	 * Strings to be used by the user
 	 */
+
+	private static final String REPLAY = "replay";
 	private static final String UNDO = "undo";
 	private static final String AJUDA = "ajuda";
 	private static final String GERAFROTA = "gerafrota";
@@ -114,8 +116,14 @@ public class Tasks {
                 case AJUDA:
                     menuHelp();
                     break;
+				case REPLAY:
+					if (game != null) {
+						game.showReplay();
+					}
+					break;
 				default:
 					System.out.println("Que comando é esse??? Repete ...");
+
 			}
 
 			System.out.print("> ");
@@ -132,6 +140,7 @@ public class Tasks {
 		System.out.println("Digite um dos comandos abaixo para interagir com o jogo:");
 		System.out.println("- " + GERAFROTA + ": Gera uma frota aleatória de navios.");
 		System.out.println("- " + UNDO + ": Desfaz a última rajada efetuada.");
+		System.out.println("- " + REPLAY + ": Mostra o replay das rajadas efetuadas.");
 		System.out.println("- " + LEFROTA + ": Permite criar e carregar uma frota personalizada.");
 		System.out.println("- " + STATUS + ": Mostra o status atual da frota.)");
 		System.out.println("- " + MAPA + ": Exibe o mapa da frota.");

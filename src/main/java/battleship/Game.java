@@ -515,4 +515,22 @@ public class Game implements IGame
 		System.out.println("====================================================");
 		System.out.println();
 	}
+	@Override
+	public void showReplay() {
+		System.out.println("\n=== REPLAY DO JOGO ===");
+
+		int turn = 1;
+
+		for (IMove move : getMyMoves()) {
+			System.out.println("Turno " + turn + ":");
+
+			for (IPosition pos : move.getShots()) {
+				System.out.println("  " + pos);
+			}
+
+			turn++;
+		}
+
+		System.out.println("=== FIM DO REPLAY ===\n");
+	}
 }
