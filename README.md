@@ -141,9 +141,6 @@ Contributions are what make the open-source community such an amazing place to l
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a **Pull Request**
 
-
-##NOTA FICHA 2 PUSH DO PROJETO:
-O elemento com o numero de aluno maior (IGE-111825), ficou sem bateria durante a aula, e portanto o push foi feito pelo aluno com o segundo maior numero: IGE-111722   .
 ---
 
 ## 📄 License
