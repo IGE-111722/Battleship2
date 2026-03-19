@@ -156,6 +156,8 @@ public class Game implements IGame
 	private Integer countHits;
 	private Integer countSinks;
 	private int moveNumber;
+	private PDFGenerator pdfGenerator = new PDFGenerator();
+	private DatabaseManager dbManager = new DatabaseManager();
 
 	//------------------------------------------------------------------
 	public Game(IFleet myFleet)
@@ -387,6 +389,10 @@ public class Game implements IGame
 		alienMoves.add(move);
 
 		moveNumber++;
+		// Grava no PDF
+		pdfGenerator.adicionarJogada(moveNumber - 1, Game.jsonShots(shots), "Rajada processada.");
+		// Grava na Base de Dados
+		dbManager.salvarJogada(moveNumber - 1, Game.jsonShots(shots));
 	}
 
 	/**
@@ -483,6 +489,7 @@ public class Game implements IGame
 			System.out.println("+--------------------------------------------------------------+");
 			System.out.println("| Maldito sejas, Java Sparrow, eu voltarei, glub glub glub ... |");
 			System.out.println("+--------------------------------------------------------------+");
+			pdfGenerator.fecharDocumento();
 	}
 
 	public int getTotalShots() {
