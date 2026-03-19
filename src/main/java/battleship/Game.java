@@ -157,6 +157,7 @@ public class Game implements IGame
 	private Integer countSinks;
 	private int moveNumber;
 	private PDFGenerator pdfGenerator = new PDFGenerator();
+	private DatabaseManager dbManager = new DatabaseManager();
 
 	//------------------------------------------------------------------
 	public Game(IFleet myFleet)
@@ -390,6 +391,8 @@ public class Game implements IGame
 		moveNumber++;
 		// Grava no PDF
 		pdfGenerator.adicionarJogada(moveNumber - 1, Game.jsonShots(shots), "Rajada processada.");
+		// Grava na Base de Dados
+		dbManager.salvarJogada(moveNumber - 1, Game.jsonShots(shots));
 	}
 
 	/**
