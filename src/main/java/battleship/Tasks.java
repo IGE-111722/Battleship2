@@ -153,6 +153,7 @@ public class Tasks {
 		System.out.println("- " + SIMULA + ": Simula um jogo completo.");
 		System.out.println("- " + TIROS + ": Lista os tiros válidos realizados (* = tiro em navio, o = tiro na água)");
 		System.out.println("- " + DESISTIR + ": Encerra o jogo.");
+		System.out.println("- " + AJUDA_DETALHADA + ": Apresenta alguma ajuda mais detalhada do jogo.");
 		System.out.println("===============================================================");
 	}
 	public static void menuHelpDetailed() {
