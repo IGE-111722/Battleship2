@@ -36,6 +36,7 @@ public class Tasks {
 	private static final String STATUS = "estado";
 	private static final String SIMULA = "simula";
 	private static final String ESTATISTICAS = "estatisticas";
+	private static final String AJUDA_DETALHADA = "ajuda_detalhada";
 
 	/**
 	 * This task also tests the fighting element of a round of three shots
@@ -121,6 +122,9 @@ public class Tasks {
 						game.showReplay();
 					}
 					break;
+				case AJUDA_DETALHADA:
+					menuHelpDetailed();
+					break;
 				default:
 					System.out.println("Que comando é esse??? Repete ...");
 
@@ -150,6 +154,48 @@ public class Tasks {
 		System.out.println("- " + TIROS + ": Lista os tiros válidos realizados (* = tiro em navio, o = tiro na água)");
 		System.out.println("- " + DESISTIR + ": Encerra o jogo.");
 		System.out.println("===============================================================");
+	}
+	public static void menuHelpDetailed() {
+		System.out.println("\n================ AJUDA DETALHADA ================");
+
+		System.out.println("gerafrota");
+		System.out.println(" -> Gera automaticamente uma frota aleatória.");
+
+		System.out.println("\nlefrota");
+		System.out.println(" -> Permite inserir manualmente os navios.");
+		System.out.println(" -> Exemplo: Barca 3 4 N");
+
+		System.out.println("\nrajada");
+		System.out.println(" -> Dispara 3 tiros.");
+		System.out.println(" -> Exemplo: A3 B5 C7");
+
+		System.out.println("\nsimula");
+		System.out.println(" -> Simula automaticamente o jogo até ao fim.");
+
+		System.out.println("\nundo");
+		System.out.println(" -> Desfaz a última jogada.");
+
+		System.out.println("\nreplay");
+		System.out.println(" -> Mostra todas as jogadas feitas.");
+
+		System.out.println("\nestatisticas");
+		System.out.println(" -> Mostra desempenho do jogador.");
+
+		System.out.println("\nmapa");
+		System.out.println(" -> Mostra o tabuleiro.");
+
+		System.out.println("\ntiros");
+		System.out.println(" -> Mostra tiros feitos no tabuleiro.");
+
+		System.out.println("\ndesisto");
+		System.out.println(" -> Termina o jogo.");
+
+		System.out.println("\n💡 DICAS:");
+		System.out.println("- Não repitas tiros!");
+		System.out.println("- Evita disparar fora do tabuleiro.");
+		System.out.println("- Usa 'simula' para testes rápidos.");
+
+		System.out.println("===============================================\n");
 	}
 	/**
 	 * This operation allows the build up of a fleet, given user data
