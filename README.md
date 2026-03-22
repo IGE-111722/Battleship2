@@ -1,5 +1,9 @@
 # ⚓ Battleship 2.0
 
+LINK DO YOUTUBE
+Aqui está o link de youtube para observar as novas funcionalidades!
+https://youtu.be/mw-U8kEjRbw
+
 ![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
 ![Java Version](https://img.shields.io/badge/Java-17%2B-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
@@ -206,3 +210,5 @@ Distributed under the MIT License. See `LICENSE` for more information.
 ---
 **Maintained by:** [@britoeabreu](https://github.com/britoeabreu)  
 *Created for the Software Engineering students at ISCTE-IUL.*
+
+
