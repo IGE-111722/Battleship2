@@ -207,6 +207,27 @@ Não escrevas explicações, comentários ou markdown.
 ## 📄 License
 Distributed under the MIT License. See `LICENSE` for more information.
 
+
+---
+### 📝 Contributo Individual - Fredson (111825)
+
+#### 1. Testes Unitários (Parte 1)
+Implementação de testes unitários para a classe **Move.java**.
+* **Foco:** Lógica de processamento de disparos, validação de JSON e mensagens verbose.
+* **Cobertura:** > 90% de Line Coverage na classe alvo.
+
+#### 2. Refabricação de Código (Parte 2)
+Aplicação de 5 técnicas para eliminar Code Smells na classe `Move`:
+
+| ID | Técnica | Localização | Descrição |
+| :--- | :--- | :--- | :--- |
+| 01 | Extract Method | `processEnemyFire` | Extração da lógica de impressão para `printVerboseReport`. |
+| 02 | Extract Method | `processEnemyFire` | Extração da construção do JSON para `buildResponseMap`. |
+| 03 | Extract Constant | `STRING_TRIM_OFFSET` | Substituição do magic number `2` por constante. |
+| 04 | Extract Variable | `printVerboseReport` | Simplificação de condição complexa (isOnlyRepeatedShots). |
+| 05 | Rename | `jsonDataMap` | Renomeação da variável `response` para maior clareza. |
+---
+
 ---
 **Maintained by:** [@britoeabreu](https://github.com/britoeabreu)  
 *Created for the Software Engineering students at ISCTE-IUL.*
