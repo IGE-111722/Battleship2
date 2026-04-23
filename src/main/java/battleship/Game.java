@@ -461,7 +461,6 @@ public class Game implements IGame
 
 		System.out.println("=== FIM DO REPLAY ===\n");
 	}
-	// # adiciona estes métodos privados dentro da classe Game
 
 	private static ObjectMapper createIndentedObjectMapper() {
 		ObjectMapper objectMapper = new ObjectMapper();
