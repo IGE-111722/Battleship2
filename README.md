@@ -154,14 +154,11 @@ Distributed under the MIT License. See `LICENSE` for more information.
 *Created for the Software Engineering students at ISCTE-IUL.*
 
 | Local                  | Code Smell              | Refactoring                          | Aluno |
-|------------------------|------------------------|--------------------------------------|--|
 | Ship::constructor      | Duplicate Assignment   | Remove Redundant Code                | 105418 |
 | Ship::buildShip        | Switch Statement       | Replace with Switch Expression       | 105418 |
 | Ship::getTop/Bottom    | Duplicate Code         | Extract Method                       | 105418 |
 | Ship::loops            | Imperative Loop        | Replace with Enhanced For Loop       | 105418 |
 | Ship::stillFloating    | Complex Loop           | Replace with Stream                  | 105418 |
-
-## Impacto da Refatoração
 
 A classe Ship foi refatorada com o objetivo de melhorar a legibilidade, manutenibilidade e organização do código.
 
@@ -176,3 +173,17 @@ Principais melhorias realizadas:
 Todas as refatorações foram validadas através de testes unitários, garantindo que não foram introduzidas alterações no comportamento do sistema.
 
 A cobertura de testes mantém-se próxima de 100%.
+
+| Local               | Code Smell              | Refactoring                    | Aluno |
+| Fleet::addShip      | Complex Conditional    | Extract Method                 | 105418 |
+| Fleet::colisionRisk | Poor Naming            | Rename Method (hasCollision)   | 105418 |
+| Fleet::loops        | Imperative Loop        | Enhanced For Loop              | 105418 |
+| Fleet::createRandom | Long Method            | Extract Variables              | 105418 |
+| Fleet::addShip      | Nested Logic           | Simplify Conditional           | 105418 |
+
+Melhorias adicionais foram realizadas na classe Fleet:
+
+- Simplificação da lógica de adição de navios
+- Melhoria na nomenclatura dos métodos para maior clareza
+- Redução de condicionais aninhadas
+- Melhoria das práticas de programação defensiva
