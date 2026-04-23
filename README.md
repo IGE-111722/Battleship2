@@ -152,3 +152,27 @@ Distributed under the MIT License. See `LICENSE` for more information.
 ---
 **Maintained by:** [@britoeabreu](https://github.com/britoeabreu)  
 *Created for the Software Engineering students at ISCTE-IUL.*
+
+| Local                  | Code Smell              | Refactoring                          | Aluno |
+|------------------------|------------------------|--------------------------------------|--|
+| Ship::constructor      | Duplicate Assignment   | Remove Redundant Code                | 105418 |
+| Ship::buildShip        | Switch Statement       | Replace with Switch Expression       | 105418 |
+| Ship::getTop/Bottom    | Duplicate Code         | Extract Method                       | 105418 |
+| Ship::loops            | Imperative Loop        | Replace with Enhanced For Loop       | 105418 |
+| Ship::stillFloating    | Complex Loop           | Replace with Stream                  | 105418 |
+
+## Impacto da Refatoração
+
+A classe Ship foi refatorada com o objetivo de melhorar a legibilidade, manutenibilidade e organização do código.
+
+Principais melhorias realizadas:
+
+- Remoção de atribuições redundantes no construtor
+- Substituição de instruções switch por expressões switch mais modernas
+- Extração de lógica duplicada para métodos reutilizáveis
+- Simplificação de ciclos através de enhanced for-loops
+- Utilização de Streams do Java para tornar a lógica mais clara e concisa
+
+Todas as refatorações foram validadas através de testes unitários, garantindo que não foram introduzidas alterações no comportamento do sistema.
+
+A cobertura de testes mantém-se próxima de 100%.
