@@ -1,5 +1,9 @@
 # ⚓ Battleship 2.0
 
+LINK DO YOUTUBE
+Aqui está o link de youtube para observar as novas funcionalidades!
+    https://youtu.be/mw-U8kEjRbw
+
 ![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
 ![Java Version](https://img.shields.io/badge/Java-17%2B-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
@@ -146,44 +150,86 @@ Contributions are what make the open-source community such an amazing place to l
 O elemento com o numero de aluno maior (IGE-111825), ficou sem bateria durante a aula, e portanto o push foi feito pelo aluno com o segundo maior numero: IGE-111722   .
 ---
 
+## Prompt final da estratégia do LLM
+
+A partir de agora vais atuar como estratega especialista no jogo da Batalha Naval, versão Descobrimentos Portugueses.
+
+O teu objetivo é escolher rajadas de 3 tiros de forma eficiente, jogando pelo menos tão bem como um jogador humano experiente.
+
+REGRAS DO JOGO
+- Tabuleiro 10x10: linhas A-J, colunas 1-10.
+- Frota inimiga:
+  - 4 Barcas (1 posição)
+  - 3 Caravelas (2 posições)
+  - 2 Naus (3 posições)
+  - 1 Fragata (4 posições)
+  - 1 Galeao (5 posições em forma de T)
+- Os navios não se podem tocar, nem ortogonalmente nem diagonalmente.
+- Caravelas, Naus e Fragatas são lineares.
+- O Galeao é em T.
+- Cada jogada é uma rajada obrigatória de 3 tiros.
+
+MISSÃO
+Sempre que eu te der o contexto do jogo, deves responder com a melhor rajada seguinte.
+
+DIÁRIO DE BORDO
+Mantém internamente:
+- rajadas anteriores
+- coordenadas já disparadas
+- posições de água
+- posições com acerto
+- navios afundados
+- halo em volta dos navios afundados
+- hipóteses em aberto sobre orientação de navios atingidos
+
+REGRAS DE ESTRATÉGIA
+1. Nunca dispares fora do tabuleiro.
+2. Nunca repitas tiros já feitos, exceto na última rajada se for inevitável para completar 3 tiros.
+3. Se houver um navio atingido e não afundado, prioridade máxima: afundá-lo.
+4. Depois de um acerto, dispara nas posições contíguas Norte, Sul, Este, Oeste.
+5. Se dois acertos estiverem alinhados, continua nessa orientação.
+6. Evita diagonais de navios lineares atingidos.
+7. Quando um navio for afundado, marca o halo completo em redor como água impossível.
+8. Em procura, escolhe tiros espalhados em zonas ainda úteis.
+9. Dá preferência a casas que ainda possam conter navios maiores.
+10. Age com disciplina e memória.
+
+FORMATO DE RESPOSTA
+Responde apenas com JSON válido, contendo exatamente 3 tiros, por exemplo:
+[
+  {"row": "A", "column": 1},
+  {"row": "D", "column": 4},
+  {"row": "H", "column": 8}
+]
+
+Não escrevas explicações, comentários ou markdown.
+
 ## 📄 License
 Distributed under the MIT License. See `LICENSE` for more information.
+
+
+---
+### 📝 Contributo Individual - Fredson (111825)
+
+#### 1. Testes Unitários (Parte 1)
+Implementação de testes unitários para a classe **Move.java**.
+* **Foco:** Lógica de processamento de disparos, validação de JSON e mensagens verbose.
+* **Cobertura:** > 90% de Line Coverage na classe alvo.
+
+#### 2. Refabricação de Código (Parte 2)
+Aplicação de 5 técnicas para eliminar Code Smells na classe `Move`:
+
+| ID | Técnica | Localização | Descrição |
+| :--- | :--- | :--- | :--- |
+| 01 | Extract Method | `processEnemyFire` | Extração da lógica de impressão para `printVerboseReport`. |
+| 02 | Extract Method | `processEnemyFire` | Extração da construção do JSON para `buildResponseMap`. |
+| 03 | Extract Constant | `STRING_TRIM_OFFSET` | Substituição do magic number `2` por constante. |
+| 04 | Extract Variable | `printVerboseReport` | Simplificação de condição complexa (isOnlyRepeatedShots). |
+| 05 | Rename | `jsonDataMap` | Renomeação da variável `response` para maior clareza. |
+---
 
 ---
 **Maintained by:** [@britoeabreu](https://github.com/britoeabreu)  
 *Created for the Software Engineering students at ISCTE-IUL.*
 
-| Local                  | Code Smell              | Refactoring                          | Aluno |
-| Ship::constructor      | Duplicate Assignment   | Remove Redundant Code                | 105418 |
-| Ship::buildShip        | Switch Statement       | Replace with Switch Expression       | 105418 |
-| Ship::getTop/Bottom    | Duplicate Code         | Extract Method                       | 105418 |
-| Ship::loops            | Imperative Loop        | Replace with Enhanced For Loop       | 105418 |
-| Ship::stillFloating    | Complex Loop           | Replace with Stream                  | 105418 |
 
-A classe Ship foi refatorada com o objetivo de melhorar a legibilidade, manutenibilidade e organização do código.
-
-Principais melhorias realizadas:
-
-- Remoção de atribuições redundantes no construtor
-- Substituição de instruções switch por expressões switch mais modernas
-- Extração de lógica duplicada para métodos reutilizáveis
-- Simplificação de ciclos através de enhanced for-loops
-- Utilização de Streams do Java para tornar a lógica mais clara e concisa
-
-Todas as refatorações foram validadas através de testes unitários, garantindo que não foram introduzidas alterações no comportamento do sistema.
-
-A cobertura de testes mantém-se próxima de 100%.
-
-| Local               | Code Smell              | Refactoring                    | Aluno |
-| Fleet::addShip      | Complex Conditional    | Extract Method                 | 105418 |
-| Fleet::colisionRisk | Poor Naming            | Rename Method (hasCollision)   | 105418 |
-| Fleet::loops        | Imperative Loop        | Enhanced For Loop              | 105418 |
-| Fleet::createRandom | Long Method            | Extract Variables              | 105418 |
-| Fleet::addShip      | Nested Logic           | Simplify Conditional           | 105418 |
-
-Melhorias adicionais foram realizadas na classe Fleet:
-
-- Simplificação da lógica de adição de navios
-- Melhoria na nomenclatura dos métodos para maior clareza
-- Redução de condicionais aninhadas
-- Melhoria das práticas de programação defensiva

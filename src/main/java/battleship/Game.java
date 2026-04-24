@@ -23,69 +23,25 @@ public class Game implements IGame
 	 *                    to represent various elements such as ships, misses, hits, etc.
 	 */
 	public static void printBoard(IFleet fleet, List<IMove> moves, boolean show_shots, boolean showLegend) {
-
 		assert fleet != null;
 		assert moves != null;
 
-		char[][] map = new char[BOARD_SIZE][BOARD_SIZE];
+		char[][] map = createEmptyBoard();
+		placeShipsOnBoard(map, fleet);
 
-		for (int r = 0; r < BOARD_SIZE; r++)
-			for (int c = 0; c < BOARD_SIZE; c++)
-				map[r][c] = EMPTY_MARKER;
-
-		for (IShip ship : fleet.getShips()) {
-			for (IPosition ship_pos : ship.getPositions())
-				map[ship_pos.getRow()][ship_pos.getColumn()] = SHIP_MARKER;
-			if (!ship.stillFloating())
-				for (IPosition adjacent_pos : ship.getAdjacentPositions())
-					map[adjacent_pos.getRow()][adjacent_pos.getColumn()] = SHIP_ADJACENT_MARKER;
+		if (show_shots) {
+			applyShotsToBoard(map, moves);
 		}
 
-		if (show_shots)
-			for (IMove move : moves)
-				for (IPosition shot : move.getShots()) {
-					if (shot.isInside()){
-						int row = shot.getRow();
-						int col = shot.getColumn();
-						if (map[row][col] == SHIP_MARKER)
-							map[row][col] = SHOT_SHIP_MARKER;
-						if (map[row][col] == EMPTY_MARKER || map[row][col] == SHIP_ADJACENT_MARKER)
-							map[row][col] = SHOT_WATER_MARKER;
-					}
-				}
-
-		System.out.println();
-		System.out.print("    ");
-		for (int col = 0; col < BOARD_SIZE; col++) {
-			System.out.print(" " + (col + 1));
-		}
-		System.out.println();
-
-		System.out.print("   +-");
-		for (int col = 0; col < BOARD_SIZE; col++) {
-			System.out.print("--");
-		}
-		System.out.println("+");
-
-		for (int row = 0; row < BOARD_SIZE; row++) {
-			Position pos = new Position(row, 0);
-			char rowLabel = pos.getClassicRow();
-			System.out.print(" " + rowLabel + " |");
-			for (int col = 0; col < BOARD_SIZE; col++)
-				System.out.print(" " + map[row][col]);
-			System.out.println(" |");
-		}
-
-		System.out.print("   +");
-		for (int col = 0; col < BOARD_SIZE; col++)
-			System.out.print("--");
-		System.out.println("-+");
+		printBoardHeader();
+		printHorizontalBorder();
+		printBoardRows(map);
+		printBottomBorder();
 
 		if (showLegend) {
-			System.out.println("          LEGENDA");
-			System.out.println("'" + SHIP_MARKER + "'->navio, '" + SHIP_ADJACENT_MARKER + "'->adjacente a navio, '" + EMPTY_MARKER + "'->água");
-			System.out.println("'" + SHOT_SHIP_MARKER + "'->Tiro certeiro, '" + SHOT_WATER_MARKER + "'->Tiro na água");
+			printBoardLegend();
 		}
+
 		System.out.println();
 	}
 
@@ -106,8 +62,7 @@ public class Game implements IGame
 		assert shots != null;
 
 		// Serializar os tiros gerados em JSON usando a biblioteca Jackson
-		ObjectMapper objectMapper = new ObjectMapper();
-		objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+		ObjectMapper objectMapper = createIndentedObjectMapper();
 
 		// 1. Create a simplified list containing only the desired data
 		List<Map<String, Object>> simplifiedShots = new ArrayList<>();
@@ -156,6 +111,8 @@ public class Game implements IGame
 	private Integer countHits;
 	private Integer countSinks;
 	private int moveNumber;
+	private PDFGenerator pdfGenerator = new PDFGenerator();
+	private DatabaseManager dbManager = new DatabaseManager();
 
 	//------------------------------------------------------------------
 	public Game(IFleet myFleet)
@@ -252,49 +209,17 @@ public class Game implements IGame
 	 * @throws RuntimeException if there is an error during the JSON serialization of the shots.
 	 */
 	public String randomEnemyFire() {
-
-		// Criar uma instância de Random com uma seed baseada no timestamp atual
 		Random random = new Random(System.currentTimeMillis());
 
-		Set<IPosition> usablePositions = new HashSet<IPosition>();
-		for (int r = 0; r < BOARD_SIZE; r++)
-			for (int c = 0; c < BOARD_SIZE; c++)
-				usablePositions.add(new Position(r, c));
-
-		this.myFleet.getSunkShips().forEach(ship -> usablePositions.removeAll(ship.getAdjacentPositions()));
-		this.alienMoves.forEach(move ->  usablePositions.removeAll(move.getShots()));
-
+		Set<IPosition> usablePositions = buildUsablePositions();
 		List<IPosition> candidateShots = new ArrayList<>(usablePositions);
 
-		// Criar lista para armazenar os tiros
-		List<IPosition> shots = new ArrayList<IPosition>();
-
-		System.out.println();
-		// Gerar coordenadas únicas até atingir o número definido por NUMBER_SHOTS
-
-		IPosition newShot = null;
-		if (candidateShots.size() >= Game.NUMBER_SHOTS)
-			while (shots.size() < Game.NUMBER_SHOTS) {
-				newShot = candidateShots.get(random.nextInt(candidateShots.size()));
-				if (!shots.contains(newShot))
-					shots.add(newShot);
-			}
-		else {
-			while (shots.size() < candidateShots.size()) {
-				newShot = candidateShots.get(random.nextInt(candidateShots.size()));
-				if (!shots.contains(newShot))
-					shots.add(newShot);
-			}
-			while (shots.size() < Game.NUMBER_SHOTS)
-				shots.add(newShot);
-		}
-
-		System.out.print("rajada ");
-		for (IPosition shot : shots)
-			System.out.print(shot + " ");
 		System.out.println();
 
-		this.fireShots(shots);
+		List<IPosition> shots = generateRandomShots(candidateShots, random);
+		printVolley(shots);
+
+		fireShots(shots);
 
 		return Game.jsonShots(shots);
 	}
@@ -367,10 +292,8 @@ public class Game implements IGame
 	{
 		assert shots != null;
 
-		List<ShotResult> shotResults = new ArrayList<ShotResult>();
-		if (shots.size() != NUMBER_SHOTS) {
-			throw new IllegalArgumentException("Must fire exactly " + NUMBER_SHOTS + " shots per move.");
-		}
+		validateShotCount(shots);
+		List<ShotResult> shotResults = new ArrayList<>();
 
 		List<IPosition> alreadyShot = new ArrayList<IPosition>();
 		for (IPosition pos : shots) {
@@ -387,6 +310,10 @@ public class Game implements IGame
 		alienMoves.add(move);
 
 		moveNumber++;
+		// Grava no PDF
+		pdfGenerator.adicionarJogada(moveNumber - 1, Game.jsonShots(shots), "Rajada processada.");
+		// Grava na Base de Dados
+		dbManager.salvarJogada(moveNumber - 1, Game.jsonShots(shots));
 	}
 
 	/**
@@ -483,6 +410,7 @@ public class Game implements IGame
 			System.out.println("+--------------------------------------------------------------+");
 			System.out.println("| Maldito sejas, Java Sparrow, eu voltarei, glub glub glub ... |");
 			System.out.println("+--------------------------------------------------------------+");
+			pdfGenerator.fecharDocumento();
 	}
 
 	public int getTotalShots() {
@@ -533,4 +461,158 @@ public class Game implements IGame
 
 		System.out.println("=== FIM DO REPLAY ===\n");
 	}
+
+	private static ObjectMapper createIndentedObjectMapper() {
+		ObjectMapper objectMapper = new ObjectMapper();
+		objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+		return objectMapper;
+	}
+
+	private static char[][] createEmptyBoard() {
+		char[][] map = new char[BOARD_SIZE][BOARD_SIZE];
+
+		for (int r = 0; r < BOARD_SIZE; r++) {
+			for (int c = 0; c < BOARD_SIZE; c++) {
+				map[r][c] = EMPTY_MARKER;
+			}
+		}
+
+		return map;
+	}
+
+	private static void placeShipsOnBoard(char[][] map, IFleet fleet) {
+		for (IShip ship : fleet.getShips()) {
+			for (IPosition shipPos : ship.getPositions()) {
+				map[shipPos.getRow()][shipPos.getColumn()] = SHIP_MARKER;
+			}
+
+			if (!ship.stillFloating()) {
+				for (IPosition adjacentPos : ship.getAdjacentPositions()) {
+					map[adjacentPos.getRow()][adjacentPos.getColumn()] = SHIP_ADJACENT_MARKER;
+				}
+			}
+		}
+	}
+
+	private static void applyShotsToBoard(char[][] map, List<IMove> moves) {
+		for (IMove move : moves) {
+			for (IPosition shot : move.getShots()) {
+				if (!shot.isInside()) {
+					continue;
+				}
+
+				int row = shot.getRow();
+				int col = shot.getColumn();
+
+				if (map[row][col] == SHIP_MARKER) {
+					map[row][col] = SHOT_SHIP_MARKER;
+				} else if (map[row][col] == EMPTY_MARKER || map[row][col] == SHIP_ADJACENT_MARKER) {
+					map[row][col] = SHOT_WATER_MARKER;
+				}
+			}
+		}
+	}
+
+	private static void printBoardHeader() {
+		System.out.println();
+		System.out.print("    ");
+		for (int col = 0; col < BOARD_SIZE; col++) {
+			System.out.print(" " + (col + 1));
+		}
+		System.out.println();
+	}
+
+	private static void printHorizontalBorder() {
+		System.out.print("   +-");
+		for (int col = 0; col < BOARD_SIZE; col++) {
+			System.out.print("--");
+		}
+		System.out.println("+");
+	}
+
+	private static void printBoardRows(char[][] map) {
+		for (int row = 0; row < BOARD_SIZE; row++) {
+			Position pos = new Position(row, 0);
+			char rowLabel = pos.getClassicRow();
+
+			System.out.print(" " + rowLabel + " |");
+			for (int col = 0; col < BOARD_SIZE; col++) {
+				System.out.print(" " + map[row][col]);
+			}
+			System.out.println(" |");
+		}
+	}
+
+	private static void printBottomBorder() {
+		System.out.print("   +");
+		for (int col = 0; col < BOARD_SIZE; col++) {
+			System.out.print("--");
+		}
+		System.out.println("-+");
+	}
+
+	private static void printBoardLegend() {
+		System.out.println("          LEGENDA");
+		System.out.println("'" + SHIP_MARKER + "'->navio, '" + SHIP_ADJACENT_MARKER + "'->adjacente a navio, '" + EMPTY_MARKER + "'->água");
+		System.out.println("'" + SHOT_SHIP_MARKER + "'->Tiro certeiro, '" + SHOT_WATER_MARKER + "'->Tiro na água");
+	}
+
+	private Set<IPosition> buildUsablePositions() {
+		Set<IPosition> usablePositions = new HashSet<>();
+
+		for (int r = 0; r < BOARD_SIZE; r++) {
+			for (int c = 0; c < BOARD_SIZE; c++) {
+				usablePositions.add(new Position(r, c));
+			}
+		}
+
+		myFleet.getSunkShips().forEach(ship -> usablePositions.removeAll(ship.getAdjacentPositions()));
+		alienMoves.forEach(move -> usablePositions.removeAll(move.getShots()));
+
+		return usablePositions;
+	}
+
+	private List<IPosition> generateRandomShots(List<IPosition> candidateShots, Random random) {
+		List<IPosition> shots = new ArrayList<>();
+		IPosition lastShot = null;
+
+		if (candidateShots.size() >= NUMBER_SHOTS) {
+			while (shots.size() < NUMBER_SHOTS) {
+				lastShot = candidateShots.get(random.nextInt(candidateShots.size()));
+				if (!shots.contains(lastShot)) {
+					shots.add(lastShot);
+				}
+			}
+		} else {
+			while (shots.size() < candidateShots.size()) {
+				lastShot = candidateShots.get(random.nextInt(candidateShots.size()));
+				if (!shots.contains(lastShot)) {
+					shots.add(lastShot);
+				}
+			}
+			while (shots.size() < NUMBER_SHOTS) {
+				shots.add(lastShot);
+			}
+		}
+
+		return shots;
+	}
+
+	private void printVolley(List<IPosition> shots) {
+		System.out.print("rajada ");
+		for (IPosition shot : shots) {
+			System.out.print(shot + " ");
+		}
+		System.out.println();
+	}
+
+	private void validateShotCount(List<IPosition> shots) {
+		if (shots.size() != NUMBER_SHOTS) {
+			throw new IllegalArgumentException("Must fire exactly " + NUMBER_SHOTS + " shots per move.");
+		}
+	}
+
+
+
+
 }
