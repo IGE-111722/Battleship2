@@ -1,0 +1,340 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > Move</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">battleship</a>
+</div>
+
+<h1>Coverage Summary for Class: Move (battleship)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Move</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/72)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/117)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package battleship;
+&nbsp;
+&nbsp;import com.fasterxml.jackson.core.JsonProcessingException;
+&nbsp;import com.fasterxml.jackson.databind.ObjectMapper;
+&nbsp;import com.fasterxml.jackson.databind.SerializationFeature;
+&nbsp;
+&nbsp;import java.util.*;
+&nbsp;
+&nbsp;/**
+&nbsp; * Shot
+&nbsp; *
+&nbsp; * @author Fredson 111825
+&nbsp; * Date: 20/02/2026
+&nbsp; * Time: 19:39
+&nbsp; */
+&nbsp;public class Move implements IMove {
+&nbsp;
+&nbsp;	public static final int STRING_TRIM_OFFSET = 2;
+&nbsp;	private final int number;
+&nbsp;	private final List&lt;IPosition&gt; shots;
+&nbsp;	private final List&lt;IGame.ShotResult&gt; shotResults;
+&nbsp;
+<b class="nc">&nbsp;	public Move(int moveNumber, List&lt;IPosition&gt; moveShots, List&lt;IGame.ShotResult&gt; moveResults) {</b>
+<b class="nc">&nbsp;		this.number = moveNumber;</b>
+<b class="nc">&nbsp;		this.shots = moveShots;</b>
+<b class="nc">&nbsp;		this.shotResults = moveResults;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	public String toString() {
+<b class="nc">&nbsp;		return &quot;Move{&quot; +</b>
+&nbsp;				&quot;number=&quot; + number +
+<b class="nc">&nbsp;				&quot;, shots=&quot; + shots.size() +</b>
+<b class="nc">&nbsp;				&quot;, results=&quot; + shotResults.size() +</b>
+&nbsp;				&#39;}&#39;;
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	public int getNumber() {
+<b class="nc">&nbsp;		return this.number;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	public List&lt;IPosition&gt; getShots() {
+<b class="nc">&nbsp;		return this.shots;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	public List&lt;IGame.ShotResult&gt; getShotResults() {
+<b class="nc">&nbsp;		return this.shotResults;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	public String processEnemyFire(boolean verbose) {
+&nbsp;
+<b class="nc">&nbsp;		int validShots = 0;</b>
+<b class="nc">&nbsp;		int repeatedShots = 0;</b>
+<b class="nc">&nbsp;		int missedShots = 0;</b>
+&nbsp;
+<b class="nc">&nbsp;		Map&lt;String, Integer&gt; sunkBoatsCount = new HashMap&lt;&gt;();</b>
+<b class="nc">&nbsp;		Map&lt;String, Integer&gt; hitsPerBoat = new HashMap&lt;&gt;();</b>
+&nbsp;
+<b class="nc">&nbsp;		for (IGame.ShotResult result : this.shotResults) {</b>
+<b class="nc">&nbsp;			if (!result.valid()) {</b>
+&nbsp;				continue;
+&nbsp;			}
+&nbsp;
+<b class="nc">&nbsp;			if (result.repeated()) {</b>
+<b class="nc">&nbsp;				repeatedShots++;</b>
+&nbsp;			} else {
+<b class="nc">&nbsp;				validShots++;</b>
+&nbsp;
+<b class="nc">&nbsp;				if (result.ship() == null) {</b>
+<b class="nc">&nbsp;					missedShots++;</b>
+&nbsp;				} else {
+<b class="nc">&nbsp;					String boatName = result.ship().getCategory();</b>
+<b class="nc">&nbsp;					hitsPerBoat.put(boatName, hitsPerBoat.getOrDefault(boatName, 0) + 1);</b>
+&nbsp;
+<b class="nc">&nbsp;					if (result.sunk()) {</b>
+<b class="nc">&nbsp;						sunkBoatsCount.put(boatName, sunkBoatsCount.getOrDefault(boatName, 0) + 1);</b>
+&nbsp;					}
+&nbsp;				}
+&nbsp;			}
+&nbsp;		}
+&nbsp;
+<b class="nc">&nbsp;		int outsideShots = Game.NUMBER_SHOTS - validShots - repeatedShots;</b>
+&nbsp;
+<b class="nc">&nbsp;		if (verbose) {</b>
+<b class="nc">&nbsp;			printVerboseReport(validShots, repeatedShots, sunkBoatsCount, hitsPerBoat, missedShots, outsideShots);</b>
+&nbsp;		}
+&nbsp;
+<b class="nc">&nbsp;		return buildResponseMap(validShots, sunkBoatsCount, repeatedShots, outsideShots, hitsPerBoat, missedShots);</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	private static String buildResponseMap(int validShots, Map&lt;String, Integer&gt; sunkBoatsCount, int repeatedShots, int outsideShots, Map&lt;String, Integer&gt; hitsPerBoat, int missedShots) {
+<b class="nc">&nbsp;		Map&lt;String, Object&gt; jsonDataMap = new LinkedHashMap&lt;&gt;();</b>
+<b class="nc">&nbsp;		jsonDataMap.put(&quot;validShots&quot;, validShots);</b>
+&nbsp;
+<b class="nc">&nbsp;		List&lt;Map&lt;String, Object&gt;&gt; sunkBoats = new ArrayList&lt;&gt;();</b>
+<b class="nc">&nbsp;		for (Map.Entry&lt;String, Integer&gt; entry : sunkBoatsCount.entrySet()) {</b>
+<b class="nc">&nbsp;			Map&lt;String, Object&gt; boat = new LinkedHashMap&lt;&gt;();</b>
+<b class="nc">&nbsp;			boat.put(&quot;count&quot;, entry.getValue());</b>
+<b class="nc">&nbsp;			boat.put(&quot;type&quot;, entry.getKey());</b>
+<b class="nc">&nbsp;			sunkBoats.add(boat);</b>
+&nbsp;		}
+<b class="nc">&nbsp;		jsonDataMap.put(&quot;sunkBoats&quot;, sunkBoats);</b>
+&nbsp;
+<b class="nc">&nbsp;		jsonDataMap.put(&quot;repeatedShots&quot;, repeatedShots);</b>
+<b class="nc">&nbsp;		jsonDataMap.put(&quot;outsideShots&quot;, outsideShots);</b>
+&nbsp;
+<b class="nc">&nbsp;		List&lt;Map&lt;String, Object&gt;&gt; boatHits = new ArrayList&lt;&gt;();</b>
+<b class="nc">&nbsp;		for (Map.Entry&lt;String, Integer&gt; entry : hitsPerBoat.entrySet()) {</b>
+<b class="nc">&nbsp;			if (!sunkBoatsCount.containsKey(entry.getKey())) {</b>
+<b class="nc">&nbsp;				Map&lt;String, Object&gt; boat = new LinkedHashMap&lt;&gt;();</b>
+<b class="nc">&nbsp;				boat.put(&quot;hits&quot;, entry.getValue());</b>
+<b class="nc">&nbsp;				boat.put(&quot;type&quot;, entry.getKey());</b>
+<b class="nc">&nbsp;				boatHits.add(boat);</b>
+&nbsp;			}
+&nbsp;		}
+<b class="nc">&nbsp;		jsonDataMap.put(&quot;hitsOnBoats&quot;, boatHits);</b>
+&nbsp;
+<b class="nc">&nbsp;		jsonDataMap.put(&quot;missedShots&quot;, missedShots);</b>
+&nbsp;
+&nbsp;		String jsonString;
+&nbsp;
+<b class="nc">&nbsp;		ObjectMapper objectMapper = new ObjectMapper();</b>
+<b class="nc">&nbsp;		objectMapper.enable(SerializationFeature.INDENT_OUTPUT);</b>
+&nbsp;
+&nbsp;		try {
+<b class="nc">&nbsp;			jsonString = objectMapper.writeValueAsString(jsonDataMap);</b>
+&nbsp;		} catch (JsonProcessingException e) {
+<b class="nc">&nbsp;			throw new RuntimeException(&quot;Erro ao serializar o JSON dos resultados da jogada&quot;, e);</b>
+&nbsp;		}
+&nbsp;
+<b class="nc">&nbsp;		System.out.println(jsonString);</b>
+<b class="nc">&nbsp;		System.out.println();</b>
+&nbsp;
+<b class="nc">&nbsp;		return jsonString;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	private void printVerboseReport(int validShots, int repeatedShots, Map&lt;String, Integer&gt; sunkBoatsCount, Map&lt;String, Integer&gt; hitsPerBoat, int missedShots, int outsideShots) {
+<b class="nc">&nbsp;		StringBuilder output = new StringBuilder();</b>
+&nbsp;
+<b class="nc">&nbsp;		boolean isOnlyRepeatedShots = validShots == 0 &amp;&amp; repeatedShots &gt; 0;</b>
+<b class="nc">&nbsp;		if (isOnlyRepeatedShots) {</b>
+<b class="nc">&nbsp;			output.append(repeatedShots)</b>
+<b class="nc">&nbsp;					.append(&quot; tiro&quot;)</b>
+<b class="nc">&nbsp;					.append(repeatedShots &gt; 1 ? &quot;s&quot; : &quot;&quot;)</b>
+<b class="nc">&nbsp;					.append(&quot; repetido&quot;)</b>
+<b class="nc">&nbsp;					.append(repeatedShots &gt; 1 ? &quot;s&quot; : &quot;&quot;);</b>
+&nbsp;		} else {
+<b class="nc">&nbsp;			if (validShots &gt; 0) {</b>
+<b class="nc">&nbsp;				output.append(validShots)</b>
+<b class="nc">&nbsp;						.append(&quot; tiro&quot;)</b>
+<b class="nc">&nbsp;						.append(validShots &gt; 1 ? &quot;s&quot; : &quot;&quot;)</b>
+<b class="nc">&nbsp;						.append(&quot; válido&quot;)</b>
+<b class="nc">&nbsp;						.append(validShots &gt; 1 ? &quot;s&quot; : &quot;&quot;)</b>
+<b class="nc">&nbsp;						.append(&quot;: &quot;);</b>
+&nbsp;			}
+&nbsp;
+<b class="nc">&nbsp;			if (!sunkBoatsCount.isEmpty()) {</b>
+<b class="nc">&nbsp;				for (Map.Entry&lt;String, Integer&gt; entry : sunkBoatsCount.entrySet()) {</b>
+<b class="nc">&nbsp;					String boatName = entry.getKey();</b>
+<b class="nc">&nbsp;					int count = entry.getValue();</b>
+<b class="nc">&nbsp;					output.append(count)</b>
+<b class="nc">&nbsp;							.append(&quot; &quot;)</b>
+<b class="nc">&nbsp;							.append(boatName)</b>
+<b class="nc">&nbsp;							.append(count &gt; 1 ? &quot;s&quot; : &quot;&quot;)</b>
+<b class="nc">&nbsp;							.append(&quot; ao fundo&quot;)</b>
+<b class="nc">&nbsp;							.append(&quot; + &quot;);</b>
+&nbsp;				}
+&nbsp;			}
+&nbsp;
+<b class="nc">&nbsp;			if (!hitsPerBoat.isEmpty()) {</b>
+<b class="nc">&nbsp;				for (Map.Entry&lt;String, Integer&gt; entry : hitsPerBoat.entrySet()) {</b>
+<b class="nc">&nbsp;					String boatName = entry.getKey();</b>
+<b class="nc">&nbsp;					int hits = entry.getValue();</b>
+&nbsp;
+<b class="nc">&nbsp;					if (!sunkBoatsCount.containsKey(boatName)) {</b>
+<b class="nc">&nbsp;						output.append(hits)</b>
+<b class="nc">&nbsp;								.append(&quot; tiro&quot;)</b>
+<b class="nc">&nbsp;								.append(hits &gt; 1 ? &quot;s&quot; : &quot;&quot;)</b>
+<b class="nc">&nbsp;								.append(&quot; num(a) &quot;)</b>
+<b class="nc">&nbsp;								.append(boatName)</b>
+<b class="nc">&nbsp;								.append(&quot; + &quot;);</b>
+&nbsp;					}
+&nbsp;				}
+&nbsp;			}
+&nbsp;
+<b class="nc">&nbsp;			if (missedShots &gt; 0) {</b>
+<b class="nc">&nbsp;				output.append(missedShots)</b>
+<b class="nc">&nbsp;						.append(&quot; tiro&quot;)</b>
+<b class="nc">&nbsp;						.append(missedShots &gt; 1 ? &quot;s&quot; : &quot;&quot;)</b>
+<b class="nc">&nbsp;						.append(&quot; na água&quot;);</b>
+<b class="nc">&nbsp;			} else if (!sunkBoatsCount.isEmpty() || !hitsPerBoat.isEmpty()) {</b>
+<b class="nc">&nbsp;				output.setLength(output.length() - STRING_TRIM_OFFSET);</b>
+&nbsp;			}
+&nbsp;
+<b class="nc">&nbsp;			if (repeatedShots &gt; 0) {</b>
+<b class="nc">&nbsp;				if (validShots &gt; 0) {</b>
+<b class="nc">&nbsp;					output.append(&quot;, &quot;);</b>
+&nbsp;				}
+<b class="nc">&nbsp;				output.append(repeatedShots)</b>
+<b class="nc">&nbsp;						.append(&quot; tiro&quot;)</b>
+<b class="nc">&nbsp;						.append(repeatedShots &gt; 1 ? &quot;s&quot; : &quot;&quot;)</b>
+<b class="nc">&nbsp;						.append(&quot; repetido&quot;)</b>
+<b class="nc">&nbsp;						.append(repeatedShots &gt; 1 ? &quot;s&quot; : &quot;&quot;);</b>
+&nbsp;			}
+&nbsp;		}
+&nbsp;
+<b class="nc">&nbsp;		if (outsideShots &gt; 0) {</b>
+<b class="nc">&nbsp;			if (!output.isEmpty()) {</b>
+<b class="nc">&nbsp;				output.append(&quot;, &quot;);</b>
+&nbsp;			}
+<b class="nc">&nbsp;			output.append(outsideShots)</b>
+<b class="nc">&nbsp;					.append(&quot; tiro&quot;)</b>
+<b class="nc">&nbsp;					.append(outsideShots &gt; 1 ? &quot;s&quot; : &quot;&quot;)</b>
+<b class="nc">&nbsp;					.append(&quot; exterior&quot;)</b>
+<b class="nc">&nbsp;					.append(outsideShots &gt; 1 ? &quot;es&quot; : &quot;&quot;);</b>
+&nbsp;		}
+&nbsp;
+<b class="nc">&nbsp;		System.out.println(&quot;Jogada nº&quot; + this.number + &quot; -&gt; &quot; + output);</b>
+&nbsp;	}
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-04-29 15:22</div>
+</div>
+</body>
+</html>

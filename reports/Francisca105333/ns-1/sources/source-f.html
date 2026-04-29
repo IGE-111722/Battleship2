@@ -1,0 +1,168 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > PDFGenerator</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">battleship</a>
+</div>
+
+<h1>Coverage Summary for Class: PDFGenerator (battleship)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">PDFGenerator</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/18)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package battleship;
+&nbsp;
+&nbsp;import com.lowagie.text.Document;
+&nbsp;import com.lowagie.text.Paragraph;
+&nbsp;import com.lowagie.text.pdf.PdfWriter;
+&nbsp;import java.io.FileOutputStream;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;public class PDFGenerator {
+&nbsp;    private static final String FILE_NAME = &quot;Historico_Batalha_Naval.pdf&quot;;
+&nbsp;    private Document document;
+&nbsp;
+<b class="nc">&nbsp;    public PDFGenerator() {</b>
+&nbsp;        try {
+<b class="nc">&nbsp;            document = new Document();</b>
+<b class="nc">&nbsp;            PdfWriter.getInstance(document, new FileOutputStream(FILE_NAME));</b>
+<b class="nc">&nbsp;            document.open();</b>
+<b class="nc">&nbsp;            document.add(new Paragraph(&quot;HISTÓRICO DE JOGO - BATALHA NAVAL&quot;));</b>
+<b class="nc">&nbsp;            document.add(new Paragraph(&quot;--------------------------------------------------&quot;));</b>
+&nbsp;
+&nbsp;            // --- ESTA É A REDE DE SEGURANÇA ---
+&nbsp;            // Se clicares no botão vermelho do IntelliJ, ele tenta fechar o PDF sozinho!
+<b class="nc">&nbsp;            Runtime.getRuntime().addShutdownHook(new Thread(() -&gt; {</b>
+<b class="nc">&nbsp;                fecharDocumento();</b>
+&nbsp;            }));
+&nbsp;            // ----------------------------------
+&nbsp;
+&nbsp;        } catch (Exception e) {
+<b class="nc">&nbsp;            System.err.println(&quot;Erro ao criar PDF: &quot; + e.getMessage());</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    public void adicionarJogada(int numJogada, String jsonShots, String resultado) {
+<b class="nc">&nbsp;        if (document != null &amp;&amp; document.isOpen()) {</b>
+&nbsp;            try {
+<b class="nc">&nbsp;                document.add(new Paragraph(&quot;Jogada nº: &quot; + numJogada));</b>
+<b class="nc">&nbsp;                document.add(new Paragraph(&quot;Tiros (JSON): &quot; + jsonShots));</b>
+<b class="nc">&nbsp;                document.add(new Paragraph(&quot;Resultado: &quot; + resultado));</b>
+<b class="nc">&nbsp;                document.add(new Paragraph(&quot; &quot;)); // Linha em branco</b>
+&nbsp;            } catch (Exception e) {
+<b class="nc">&nbsp;                System.err.println(&quot;Erro ao adicionar texto ao PDF: &quot; + e.getMessage());</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    public void fecharDocumento() {
+<b class="nc">&nbsp;        if (document != null &amp;&amp; document.isOpen()) {</b>
+<b class="nc">&nbsp;            document.close();</b>
+<b class="nc">&nbsp;            System.out.println(&quot;=&gt; PDF guardado com sucesso: &quot; + FILE_NAME);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-04-29 15:22</div>
+</div>
+</body>
+</html>
