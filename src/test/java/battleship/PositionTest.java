@@ -1,6 +1,7 @@
 package battleship;
 
 import org.junit.jupiter.api.*;
+import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -27,7 +28,7 @@ public class PositionTest {
 	@BeforeEach
 	void setUp() {
 		position = new Position(2, 3);
-	//	position = new Position('C', 4);
+		// position = new Position('C', 4);
 	}
 
 	@AfterEach
@@ -45,6 +46,19 @@ public class PositionTest {
 		assertFalse(pos.isHit(), "New position should not be hit");
 	}
 
+	// --- NOVOS TESTES PARA CONVERSÃO DE COORDENADAS ---
+	@Test
+	@DisplayName("Testa a construção de posição com char e int (ex: A1)")
+	void constructorCharAndInt() {
+		Position pos = new Position('A', 1);
+		assertEquals(0, pos.getRow());
+		assertEquals(0, pos.getColumn());
+		assertEquals('A', pos.getClassicRow());
+		assertEquals(1, pos.getClassicColumn());
+		assertFalse(pos.isOccupied());
+		assertFalse(pos.isHit());
+	}
+
 	@Test
 	void getRow() {
 		assertEquals(2, position.getRow(), "Failed to get row: expected 2 but got " + position.getRow());
@@ -57,12 +71,13 @@ public class PositionTest {
 
 	@Test
 	void getClassicRow() {
-		assertEquals('C', position.getClassicRow(), "Failed to get row: expected 2 but got " + position.getRow());
+		assertEquals('C', position.getClassicRow(), "Failed to get classic row: expected C but got " + position.getClassicRow());
 	}
 
 	@Test
 	void getClassicColumn() {
-		assertEquals(3, position.getColumn(), "Failed to get column: expected 3 but got " + position.getColumn());
+		// A coluna base é 3, logo a clássica (1-10) é 4
+		assertEquals(4, position.getClassicColumn(), "Failed to get classic column: expected 4 but got " + position.getClassicColumn());
 	}
 
 	@Test
@@ -125,6 +140,33 @@ public class PositionTest {
 				"isAdjacentTo should throw NullPointerException for null input");
 	}
 
+	// --- NOVOS TESTES PARA LIMITES E ADJACÊNCIAS ---
+	@Test
+	@DisplayName("Testa as posições adjacentes no canto do tabuleiro (limite)")
+	void adjacentPositionsCorner() {
+		Position corner = new Position(0, 0);
+		List<IPosition> adjCorner = corner.adjacentPositions();
+		assertEquals(3, adjCorner.size(), "Corner position should have exactly 3 valid adjacent positions");
+	}
+
+	@Test
+	@DisplayName("Testa as posições adjacentes no meio do tabuleiro")
+	void adjacentPositionsMiddle() {
+		Position middle = new Position(5, 5);
+		List<IPosition> adjMiddle = middle.adjacentPositions();
+		assertEquals(8, adjMiddle.size(), "Middle position should have exactly 8 valid adjacent positions");
+	}
+
+	// --- NOVO TESTE PARA POSIÇÃO ALEATÓRIA ---
+	@Test
+	@DisplayName("Garante que a posição aleatória está sempre dentro dos limites")
+	void randomPosition() {
+		for (int i = 0; i < 50; i++) {
+			Position p = Position.randomPosition();
+			assertTrue(p.isInside(), "Random position " + p + " must be inside the board");
+		}
+	}
+
 	@Test
 	void isOccupied() {
 		assertFalse(position.isOccupied(), "New position should not be occupied");
@@ -137,6 +179,15 @@ public class PositionTest {
 		assertFalse(position.isHit(), "New position should not be hit");
 		position.shoot();
 		assertTrue(position.isHit(), "Position should be hit after shoot()");
+	}
+
+	// --- NOVO TESTE PARA UNSHOOT ---
+	@Test
+	void unshoot() {
+		position.shoot();
+		assertTrue(position.isHit());
+		position.unshoot();
+		assertFalse(position.isHit(), "Position should not be hit after unshoot()");
 	}
 
 	@Test
@@ -176,7 +227,7 @@ public class PositionTest {
 
 	@Test
 	void toStringFormat() {
-//		String expected = "Row = C, Column = 4";
+//     String expected = "Row = C, Column = 4";
 		String expected = "C4";
 		assertEquals(expected, position.toString(),
 				"Incorrect string representation: expected '" + expected +

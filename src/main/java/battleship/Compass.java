@@ -78,27 +78,24 @@ public enum Compass
 	 * @param ch the ch
 	 * @return the compass
 	 */
-	static Compass charToCompass(char ch)
-    {
-        Compass bearing;
-        switch (ch)
-        {
-        case 'n':
-            bearing = NORTH;
-            break;
-        case 's':
-            bearing = SOUTH;
-            break;
-        case 'e':
-            bearing = EAST;
-            break;
-        case 'o':
-            bearing = WEST;
-            break;
-        default:
-            bearing = null;
-        }
-    
-        return bearing;
-    }
+	static Compass charToCompass(char ch) {
+		Compass bearing;
+		switch (Character.toLowerCase(ch)) {
+			case 'n':
+				bearing = NORTH;
+				break;
+			case 's':
+				bearing = SOUTH;
+				break;
+			case 'e':
+				bearing = EAST;
+				break;
+			case 'o':
+				bearing = WEST;
+				break;
+			default:
+				throw new IllegalArgumentException("Direção inválida: " + ch);
+		}
+		return bearing;
+	}
 }
