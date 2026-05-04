@@ -173,7 +173,7 @@ import java.util.ArrayList;
 		 */
 		@Test
 		void testColisionRisk() throws Exception {
-			var method = Fleet.class.getDeclaredMethod("colisionRisk", IShip.class);
+			var method = Fleet.class.getDeclaredMethod("hasCollision", IShip.class);
 			method.setAccessible(true);
 
 			IShip ship1 = new Barge(Compass.NORTH, new Position(1, 1));

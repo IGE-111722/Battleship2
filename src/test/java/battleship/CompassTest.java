@@ -77,15 +77,18 @@ public class CompassTest {
 	 * Test for the charToCompass method (invalid input).
 	 */
 	@Test
+	@DisplayName("charToCompass deve lançar exceção para input 'x' inválido")
 	void charToCompass2() {
-		assertNull(Compass.charToCompass('x'), "Error: 'x' should map to null.");
+		assertThrows(IllegalArgumentException.class, () -> {
+			Compass.charToCompass('x');
+		}, "Deve lançar IllegalArgumentException para 'x'");
 	}
 
-	/**
-	 * Test for the charToCompass method (null input).
-	 */
 	@Test
+	@DisplayName("charToCompass deve lançar exceção para caractere nulo")
 	void charToCompass3() {
-		assertNull(Compass.charToCompass('\0'), "Error: Null character should map to null.");
+		assertThrows(IllegalArgumentException.class, () -> {
+			Compass.charToCompass('\0');
+		}, "Deve lançar IllegalArgumentException para caractere nulo");
 	}
 }
