@@ -83,31 +83,31 @@ public class PositionTest {
 	@Test
 	void isValid1() {
 		position = new Position(0, 0);
-		assertTrue(position.isInside(), "Position (0,0) should be valid");
+		assertTrue(position.isInside(Game.BOARD_SIZE), "Position (0,0) should be valid");
 	}
 
 	@Test
 	void isValid2() {
 		position = new Position(-1, 5);
-		assertFalse(position.isInside(), "Position with negative row should be invalid");
+		assertFalse(position.isInside(Game.BOARD_SIZE), "Position with negative row should be invalid");
 	}
 
 	@Test
 	void isValid3() {
 		position = new Position(5, -1);
-		assertFalse(position.isInside(), "Position with negative column should be invalid");
+		assertFalse(position.isInside(Game.BOARD_SIZE), "Position with negative column should be invalid");
 	}
 
 	@Test
 	void isValid4() {
 		position = new Position(Game.BOARD_SIZE, 5);
-		assertFalse(position.isInside(), "Position with row >= BOARD_SIZE should be invalid");
+		assertFalse(position.isInside(Game.BOARD_SIZE), "Position with row >= BOARD_SIZE should be invalid");
 	}
 
 	@Test
 	void isValid5() {
 		position = new Position(5, Game.BOARD_SIZE);
-		assertFalse(position.isInside(), "Position with column >= BOARD_SIZE should be invalid");
+		assertFalse(position.isInside(Game.BOARD_SIZE), "Position with column >= BOARD_SIZE should be invalid");
 	}
 
 	@Test
@@ -163,7 +163,7 @@ public class PositionTest {
 	void randomPosition() {
 		for (int i = 0; i < 50; i++) {
 			Position p = Position.randomPosition();
-			assertTrue(p.isInside(), "Random position " + p + " must be inside the board");
+			assertTrue(p.isInside(Game.BOARD_SIZE), "Random position " + p + " must be inside the board");
 		}
 	}
 

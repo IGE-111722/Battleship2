@@ -157,8 +157,8 @@ public class Position implements IPosition {
 	 * @return true if the position is within the board, false otherwise
 	 */
 	@Override
-	public boolean isInside() {
-		return row >= 0 && column >= 0 && row < Game.BOARD_SIZE && column < Game.BOARD_SIZE;
+	public boolean isInside(int boardSize) {
+		return row >= 0 && column >= 0 && row < boardSize && column < boardSize;
 	}
 
 	/**
@@ -202,7 +202,7 @@ public class Position implements IPosition {
 		for (int[] dir : directions) {
 			Position newPosition = new Position(row + dir[0], col + dir[1]);
 			// Only add the position if it's inside the board boundaries
-			if (newPosition.isInside()) {
+			if (newPosition.isInside(Game.BOARD_SIZE)) {
 				adjacents.add(newPosition);
 			}
 		}
