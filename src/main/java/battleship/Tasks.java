@@ -85,10 +85,7 @@ public class Tasks {
 						myFleet.printStatus();
 						game.printMyBoard(true, false);
 
-						if (game.getRemainingShips() == 0) {
-							game.over();
-							System.exit(0);
-						}
+						checkGameOver(game);
 					}
 					break;
 				case SIMULA:
@@ -104,10 +101,7 @@ public class Tasks {
 							}
 						}
 
-						if (game.getRemainingShips() == 0) {
-							game.over();
-							System.exit(0);
-						}
+						checkGameOver(game);
 					}
 					break;
 				case TIROS:
@@ -134,6 +128,13 @@ public class Tasks {
 			command = in.next();
 		}
 		System.out.println(GOODBYE_MESSAGE);
+	}
+
+	private static void checkGameOver(IGame game) {
+		if (game.getRemainingShips() == 0) {
+			game.over();
+			System.exit(0);
+		}
 	}
 
 	/**
