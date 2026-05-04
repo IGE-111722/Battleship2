@@ -48,7 +48,7 @@ class TasksTest {
     @DisplayName("readClassicPosition deve aceitar formato compacto 'A3'")
     void testReadClassicPosition_CompactFormat_Valid() {
         Scanner scanner = createScanner("A3\n");
-        IPosition pos = Tasks.readClassicPosition(scanner);
+        IPosition pos = Position.readClassicPosition(scanner);
         assertEquals(0, pos.getRow());
         assertEquals(2, pos.getColumn());
         assertTrue(pos.isInside());
@@ -58,7 +58,7 @@ class TasksTest {
     @DisplayName("readClassicPosition deve aceitar formato separado 'J 10'")
     void testReadClassicPosition_SeparatedFormat_Valid() {
         Scanner scanner = createScanner("J 10\n");
-        IPosition pos = Tasks.readClassicPosition(scanner);
+        IPosition pos = Position.readClassicPosition(scanner);
         assertEquals(9, pos.getRow());
         assertEquals(9, pos.getColumn());
         assertTrue(pos.isInside());
@@ -68,7 +68,7 @@ class TasksTest {
     @DisplayName("readClassicPosition deve aceitar letras minúsculas")
     void testReadClassicPosition_LowercaseLetter() {
         Scanner scanner = createScanner("b 4\n");
-        IPosition pos = Tasks.readClassicPosition(scanner);
+        IPosition pos = Position.readClassicPosition(scanner);
         assertEquals(1, pos.getRow());
         assertEquals(3, pos.getColumn());
         assertTrue(pos.isInside());
@@ -78,14 +78,14 @@ class TasksTest {
     @DisplayName("readClassicPosition deve lançar exceção quando não há tokens suficientes")
     void testReadClassicPosition_NoInput() {
         Scanner scanner = createScanner("");
-        assertThrows(IllegalArgumentException.class, () -> Tasks.readClassicPosition(scanner));
+        assertThrows(IllegalArgumentException.class, () -> Position.readClassicPosition(scanner));
     }
 
     @Test
     @DisplayName("readClassicPosition deve lançar exceção com formato completamente inválido")
     void testReadClassicPosition_CompletelyInvalidFormat() {
         Scanner scanner = createScanner("123 ABC\n");
-        assertThrows(IllegalArgumentException.class, () -> Tasks.readClassicPosition(scanner));
+        assertThrows(IllegalArgumentException.class, () -> Position.readClassicPosition(scanner));
     }
 
     // ====================== TESTES readShip ======================
