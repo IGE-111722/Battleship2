@@ -1,8 +1,11 @@
 package battleship;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Scanner;
 
 /**
  * Represents a position on the game board.
@@ -11,6 +14,7 @@ import java.util.Objects;
  */
 public class Position implements IPosition {
 
+	public static final char ASCII_A_OFFSET = 'A';
 	/**
 	 * The row coordinate of the position.
 	 */
@@ -46,10 +50,48 @@ public class Position implements IPosition {
 	 * @param classicColumn the column coordinate of the position
 	 */
 	public Position(char classicRow, int classicColumn) {
-		this.row = Character.toUpperCase(classicRow) - 'A';
+		this.row = Character.toUpperCase(classicRow) - ASCII_A_OFFSET;
 		this.column = classicColumn-1;
 		this.isOccupied = false;
 		this.isHit = false;
+	}
+
+	/**
+	 * This operation allows reading a position in the map
+	 *
+	 * @param in The scanner to read from
+	 * @return The classic position that has been read
+	 */
+	public static IPosition readClassicPosition(@NotNull Scanner in) {
+		// Verifica se ainda há tokens disponíveis
+		if (!in.hasNext()) {
+			throw new IllegalArgumentException("Nenhuma posição válida encontrada!");
+		}
+
+		String part1 = in.next(); // Primeiro token
+		String part2 = null;
+
+		if (in.hasNextInt()) {
+			part2 = in.next(); // Segundo token, se disponível
+		}
+
+		String input = (part2 != null) ? part1 + part2 : part1;
+
+		// Normalizar o input para tratar letras maiúsculas e minúsculas
+		input = input.toUpperCase();
+
+		// Verificar os dois formatos possíveis: compactos e com espaço
+		if (input.matches("[A-Z]\\d+")) {
+			char column = input.charAt(0); // Extrair a coluna
+			int row = Integer.parseInt(input.substring(1)); // Extrair a linha
+			return new Position(column, row);
+		} else if (part2 != null && part1.matches("[A-Z]") && part2.matches("\\d+")) {
+			char column = part1.charAt(0); // Extrair a coluna
+			int row = Integer.parseInt(part2); // Extrair a linha
+			return new Position(column, row);
+		} else {
+			throw new IllegalArgumentException("Formato inválido. Use 'A3', 'A 3' ou similar.");
+		}
 	}
 
 	public void unshoot()
@@ -97,7 +139,7 @@ public class Position implements IPosition {
 	 * @return the traditional row within [A-J]
 	 */
 	public char getClassicRow() {
-		return (char) ('A' + row);
+		return (char) (ASCII_A_OFFSET + row);
 	}
 
 	/**
@@ -241,7 +283,7 @@ public class Position implements IPosition {
 	 */
 	@Override
 	public String toString() {
-		return (char) ('A' + row) + "" + (column + 1);
+		return (char) (ASCII_A_OFFSET + row) + "" + (column + 1);
 //		return "Row = " + (char) ('A' + row) + ", Column = " + (column + 1);
 	}
 }
