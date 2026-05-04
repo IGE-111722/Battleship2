@@ -44,26 +44,26 @@ Current scope:     <a href="../../index.html">all classes</a>
   <td class="name">DatabaseManager</td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/1)
+    (1/1)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/2)
+    (2/2)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    83,3%
   </span>
   <span class="absValue">
-    (0/12)
+    (10/12)
   </span>
 </td>
 </tr>
@@ -84,11 +84,11 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    private static final String USER = &quot;sa&quot;;
 &nbsp;    private static final String PASS = &quot;&quot;;
 &nbsp;
-<b class="nc">&nbsp;    public DatabaseManager() {</b>
-<b class="nc">&nbsp;        try (Connection conn = DriverManager.getConnection(URL, USER, PASS)) {</b>
-<b class="nc">&nbsp;            Statement stmt = conn.createStatement();</b>
+<b class="fc">&nbsp;    public DatabaseManager() {</b>
+<b class="fc">&nbsp;        try (Connection conn = DriverManager.getConnection(URL, USER, PASS)) {</b>
+<b class="fc">&nbsp;            Statement stmt = conn.createStatement();</b>
 &nbsp;            // Cria a tabela se não existir
-<b class="nc">&nbsp;            stmt.execute(&quot;CREATE TABLE IF NOT EXISTS JOGADAS (&quot; +</b>
+<b class="fc">&nbsp;            stmt.execute(&quot;CREATE TABLE IF NOT EXISTS JOGADAS (&quot; +</b>
 &nbsp;                    &quot;id INT AUTO_INCREMENT PRIMARY KEY, &quot; +
 &nbsp;                    &quot;num_jogada INT, &quot; +
 &nbsp;                    &quot;tiros VARCHAR(255), &quot; +
@@ -99,12 +99,12 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    }
 &nbsp;
 &nbsp;    public void salvarJogada(int numJogada, String jsonShots) {
-<b class="nc">&nbsp;        String sql = &quot;INSERT INTO JOGADAS (num_jogada, tiros) VALUES (?, ?)&quot;;</b>
-<b class="nc">&nbsp;        try (Connection conn = DriverManager.getConnection(URL, USER, PASS);</b>
-<b class="nc">&nbsp;             PreparedStatement pstmt = conn.prepareStatement(sql)) {</b>
-<b class="nc">&nbsp;            pstmt.setInt(1, numJogada);</b>
-<b class="nc">&nbsp;            pstmt.setString(2, jsonShots);</b>
-<b class="nc">&nbsp;            pstmt.executeUpdate();</b>
+<b class="fc">&nbsp;        String sql = &quot;INSERT INTO JOGADAS (num_jogada, tiros) VALUES (?, ?)&quot;;</b>
+<b class="fc">&nbsp;        try (Connection conn = DriverManager.getConnection(URL, USER, PASS);</b>
+<b class="fc">&nbsp;             PreparedStatement pstmt = conn.prepareStatement(sql)) {</b>
+<b class="fc">&nbsp;            pstmt.setInt(1, numJogada);</b>
+<b class="fc">&nbsp;            pstmt.setString(2, jsonShots);</b>
+<b class="fc">&nbsp;            pstmt.executeUpdate();</b>
 &nbsp;        } catch (SQLException e) {
 <b class="nc">&nbsp;            System.err.println(&quot;Erro ao salvar na BD: &quot; + e.getMessage());</b>
 &nbsp;        }
@@ -133,7 +133,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2026-04-29 15:22</div>
+    <div style="float:right;">generated on 2026-05-04 12:25</div>
 </div>
 </body>
 </html>

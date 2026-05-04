@@ -64,10 +64,10 @@ Current scope:     <a href="../../index.html">all classes</a>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    91,7%
+    95,8%
   </span>
   <span class="absValue">
-    (22/24)
+    (23/24)
   </span>
 </td>
 <td class="coverageStat">
@@ -100,6 +100,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp; */
 &nbsp;public class Position implements IPosition {
 &nbsp;
+&nbsp;	public static final char ASCII_A_OFFSET = &#39;A&#39;;
 &nbsp;	/**
 &nbsp;	 * The row coordinate of the position.
 &nbsp;	 */
@@ -135,7 +136,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;	 * @param classicColumn the column coordinate of the position
 &nbsp;	 */
 <b class="fc">&nbsp;	public Position(char classicRow, int classicColumn) {</b>
-<b class="fc">&nbsp;		this.row = Character.toUpperCase(classicRow) - &#39;A&#39;;</b>
+<b class="fc">&nbsp;		this.row = Character.toUpperCase(classicRow) - ASCII_A_OFFSET;</b>
 <b class="fc">&nbsp;		this.column = classicColumn-1;</b>
 <b class="fc">&nbsp;		this.isOccupied = false;</b>
 <b class="fc">&nbsp;		this.isHit = false;</b>
@@ -186,7 +187,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;	 * @return the traditional row within [A-J]
 &nbsp;	 */
 &nbsp;	public char getClassicRow() {
-<b class="fc">&nbsp;		return (char) (&#39;A&#39; + row);</b>
+<b class="fc">&nbsp;		return (char) (ASCII_A_OFFSET + row);</b>
 &nbsp;	}
 &nbsp;
 &nbsp;	/**
@@ -307,7 +308,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;		}
 <b class="fc">&nbsp;		if (otherPosition instanceof IPosition) {</b>
 <b class="fc">&nbsp;			IPosition other = (IPosition) otherPosition;</b>
-<b class="pc">&nbsp;			return this.row == other.getRow() &amp;&amp; this.column == other.getColumn();</b>
+<b class="fc">&nbsp;			return this.row == other.getRow() &amp;&amp; this.column == other.getColumn();</b>
 &nbsp;		}
 <b class="fc">&nbsp;		return false;</b>
 &nbsp;	}
@@ -330,7 +331,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;	 */
 &nbsp;	@Override
 &nbsp;	public String toString() {
-<b class="fc">&nbsp;		return (char) (&#39;A&#39; + row) + &quot;&quot; + (column + 1);</b>
+<b class="fc">&nbsp;		return (char) (ASCII_A_OFFSET + row) + &quot;&quot; + (column + 1);</b>
 &nbsp;//		return &quot;Row = &quot; + (char) (&#39;A&#39; + row) + &quot;, Column = &quot; + (column + 1);
 &nbsp;	}
 &nbsp;}
@@ -357,7 +358,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2026-04-29 15:22</div>
+    <div style="float:right;">generated on 2026-05-04 12:25</div>
 </div>
 </body>
 </html>

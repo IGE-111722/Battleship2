@@ -48,34 +48,34 @@ Current scope:     <a href="../../index.html">all classes</a>
   <td class="name">Ship</td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/1)
+    (1/1)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    90,5%
   </span>
   <span class="absValue">
-    (0/21)
+    (19/21)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    70,2%
   </span>
   <span class="absValue">
-    (0/47)
+    (33/47)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    83,3%
   </span>
   <span class="absValue">
-    (0/66)
+    (55/66)
   </span>
 </td>
 </tr>
@@ -108,17 +108,17 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;	 * Factory method to create ships
 &nbsp;	 */
 &nbsp;	static Ship buildShip(String shipKind, Compass bearing, Position pos) {
-<b class="nc">&nbsp;		Objects.requireNonNull(shipKind);</b>
-<b class="nc">&nbsp;		Objects.requireNonNull(bearing);</b>
-<b class="nc">&nbsp;		Objects.requireNonNull(pos);</b>
+<b class="fc">&nbsp;		Objects.requireNonNull(shipKind);</b>
+<b class="fc">&nbsp;		Objects.requireNonNull(bearing);</b>
+<b class="fc">&nbsp;		Objects.requireNonNull(pos);</b>
 &nbsp;
-<b class="nc">&nbsp;		return switch (shipKind) {</b>
-<b class="nc">&nbsp;			case BARCA -&gt; new Barge(bearing, pos);</b>
+<b class="pc">&nbsp;		return switch (shipKind) {</b>
+<b class="fc">&nbsp;			case BARCA -&gt; new Barge(bearing, pos);</b>
 <b class="nc">&nbsp;			case CARAVELA -&gt; new Caravel(bearing, pos);</b>
 <b class="nc">&nbsp;			case NAU -&gt; new Carrack(bearing, pos);</b>
 <b class="nc">&nbsp;			case FRAGATA -&gt; new Frigate(bearing, pos);</b>
 <b class="nc">&nbsp;			case GALEAO -&gt; new Galleon(bearing, pos);</b>
-<b class="nc">&nbsp;			default -&gt; throw new IllegalArgumentException(&quot;Invalid ship type: &quot; + shipKind);</b>
+<b class="fc">&nbsp;			default -&gt; throw new IllegalArgumentException(&quot;Invalid ship type: &quot; + shipKind);</b>
 &nbsp;		};
 &nbsp;	}
 &nbsp;
@@ -129,21 +129,21 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;
 &nbsp;	protected List&lt;IPosition&gt; positions;
 &nbsp;
-<b class="nc">&nbsp;	public Ship(String category, Compass bearing, IPosition pos, int size) {</b>
-<b class="nc">&nbsp;		this.category = Objects.requireNonNull(category, &quot;Ship&#39;s category must not be null&quot;);</b>
-<b class="nc">&nbsp;		this.bearing = Objects.requireNonNull(bearing, &quot;Ship&#39;s bearing must not be null&quot;);</b>
-<b class="nc">&nbsp;		this.pos = Objects.requireNonNull(pos, &quot;Ship&#39;s position must not be null&quot;);</b>
-<b class="nc">&nbsp;		this.size = size;</b>
-<b class="nc">&nbsp;		this.positions = new ArrayList&lt;&gt;();</b>
+<b class="fc">&nbsp;	public Ship(String category, Compass bearing, IPosition pos, int size) {</b>
+<b class="fc">&nbsp;		this.category = Objects.requireNonNull(category, &quot;Ship&#39;s category must not be null&quot;);</b>
+<b class="fc">&nbsp;		this.bearing = Objects.requireNonNull(bearing, &quot;Ship&#39;s bearing must not be null&quot;);</b>
+<b class="fc">&nbsp;		this.pos = Objects.requireNonNull(pos, &quot;Ship&#39;s position must not be null&quot;);</b>
+<b class="fc">&nbsp;		this.size = size;</b>
+<b class="fc">&nbsp;		this.positions = new ArrayList&lt;&gt;();</b>
 &nbsp;	}
 &nbsp;
 &nbsp;	@Override
 &nbsp;	public String getCategory() {
-<b class="nc">&nbsp;		return category;</b>
+<b class="fc">&nbsp;		return category;</b>
 &nbsp;	}
 &nbsp;
 &nbsp;	public List&lt;IPosition&gt; getPositions() {
-<b class="nc">&nbsp;		return positions;</b>
+<b class="fc">&nbsp;		return positions;</b>
 &nbsp;	}
 &nbsp;
 &nbsp;	public List&lt;IPosition&gt; getAdjacentPositions() {
@@ -161,118 +161,118 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;
 &nbsp;	@Override
 &nbsp;	public IPosition getPosition() {
-<b class="nc">&nbsp;		return pos;</b>
+<b class="fc">&nbsp;		return pos;</b>
 &nbsp;	}
 &nbsp;
 &nbsp;	@Override
 &nbsp;	public Compass getBearing() {
-<b class="nc">&nbsp;		return bearing;</b>
+<b class="fc">&nbsp;		return bearing;</b>
 &nbsp;	}
 &nbsp;
 &nbsp;	public int getSize() {
-<b class="nc">&nbsp;		return size;</b>
+<b class="fc">&nbsp;		return size;</b>
 &nbsp;	}
 &nbsp;
 &nbsp;	@Override
 &nbsp;	public boolean stillFloating() {
-<b class="nc">&nbsp;		return positions.stream().anyMatch(p -&gt; !p.isHit());</b>
+<b class="fc">&nbsp;		return positions.stream().anyMatch(p -&gt; !p.isHit());</b>
 &nbsp;	}
 &nbsp;
 &nbsp;	@Override
 &nbsp;	public int getTopMostPos() {
-<b class="nc">&nbsp;		return getExtremeRow(true);</b>
+<b class="fc">&nbsp;		return getExtremeRow(true);</b>
 &nbsp;	}
 &nbsp;
 &nbsp;	@Override
 &nbsp;	public int getBottomMostPos() {
-<b class="nc">&nbsp;		return getExtremeRow(false);</b>
+<b class="fc">&nbsp;		return getExtremeRow(false);</b>
 &nbsp;	}
 &nbsp;
 &nbsp;	@Override
 &nbsp;	public int getLeftMostPos() {
-<b class="nc">&nbsp;		return getExtremeColumn(true);</b>
+<b class="fc">&nbsp;		return getExtremeColumn(true);</b>
 &nbsp;	}
 &nbsp;
 &nbsp;	@Override
 &nbsp;	public int getRightMostPos() {
-<b class="nc">&nbsp;		return getExtremeColumn(false);</b>
+<b class="fc">&nbsp;		return getExtremeColumn(false);</b>
 &nbsp;	}
 &nbsp;
 &nbsp;	private int getExtremeRow(boolean findMin) {
-<b class="nc">&nbsp;		int value = positions.get(0).getRow();</b>
+<b class="fc">&nbsp;		int value = positions.get(0).getRow();</b>
 &nbsp;
-<b class="nc">&nbsp;		for (IPosition pos : positions) {</b>
-<b class="nc">&nbsp;			int row = pos.getRow();</b>
-<b class="nc">&nbsp;			if (findMin ? row &lt; value : row &gt; value) {</b>
-<b class="nc">&nbsp;				value = row;</b>
+<b class="fc">&nbsp;		for (IPosition pos : positions) {</b>
+<b class="fc">&nbsp;			int row = pos.getRow();</b>
+<b class="pc">&nbsp;			if (findMin ? row &lt; value : row &gt; value) {</b>
+<b class="fc">&nbsp;				value = row;</b>
 &nbsp;			}
 &nbsp;		}
-<b class="nc">&nbsp;		return value;</b>
+<b class="fc">&nbsp;		return value;</b>
 &nbsp;	}
 &nbsp;
 &nbsp;	private int getExtremeColumn(boolean findMin) {
-<b class="nc">&nbsp;		int value = positions.get(0).getColumn();</b>
+<b class="fc">&nbsp;		int value = positions.get(0).getColumn();</b>
 &nbsp;
-<b class="nc">&nbsp;		for (IPosition pos : positions) {</b>
-<b class="nc">&nbsp;			int col = pos.getColumn();</b>
-<b class="nc">&nbsp;			if (findMin ? col &lt; value : col &gt; value) {</b>
-<b class="nc">&nbsp;				value = col;</b>
+<b class="fc">&nbsp;		for (IPosition pos : positions) {</b>
+<b class="fc">&nbsp;			int col = pos.getColumn();</b>
+<b class="pc">&nbsp;			if (findMin ? col &lt; value : col &gt; value) {</b>
+<b class="fc">&nbsp;				value = col;</b>
 &nbsp;			}
 &nbsp;		}
-<b class="nc">&nbsp;		return value;</b>
+<b class="fc">&nbsp;		return value;</b>
 &nbsp;	}
 &nbsp;
 &nbsp;	@Override
 &nbsp;	public boolean occupies(IPosition pos) {
-<b class="nc">&nbsp;		Objects.requireNonNull(pos);</b>
+<b class="fc">&nbsp;		Objects.requireNonNull(pos);</b>
 &nbsp;
-<b class="nc">&nbsp;		for (IPosition p : positions) {</b>
-<b class="nc">&nbsp;			if (p.equals(pos)) {</b>
-<b class="nc">&nbsp;				return true;</b>
+<b class="fc">&nbsp;		for (IPosition p : positions) {</b>
+<b class="fc">&nbsp;			if (p.equals(pos)) {</b>
+<b class="fc">&nbsp;				return true;</b>
 &nbsp;			}
 &nbsp;		}
-<b class="nc">&nbsp;		return false;</b>
+<b class="fc">&nbsp;		return false;</b>
 &nbsp;	}
 &nbsp;
 &nbsp;	@Override
 &nbsp;	public boolean tooCloseTo(IShip other) {
-<b class="nc">&nbsp;		Objects.requireNonNull(other);</b>
+<b class="fc">&nbsp;		Objects.requireNonNull(other);</b>
 &nbsp;
-<b class="nc">&nbsp;		for (IPosition pos : other.getPositions()) {</b>
-<b class="nc">&nbsp;			if (tooCloseTo(pos)) {</b>
-<b class="nc">&nbsp;				return true;</b>
+<b class="fc">&nbsp;		for (IPosition pos : other.getPositions()) {</b>
+<b class="fc">&nbsp;			if (tooCloseTo(pos)) {</b>
+<b class="fc">&nbsp;				return true;</b>
 &nbsp;			}
 &nbsp;		}
-<b class="nc">&nbsp;		return false;</b>
+<b class="fc">&nbsp;		return false;</b>
 &nbsp;	}
 &nbsp;
 &nbsp;	@Override
 &nbsp;	public boolean tooCloseTo(IPosition pos) {
-<b class="nc">&nbsp;		Objects.requireNonNull(pos);</b>
+<b class="fc">&nbsp;		Objects.requireNonNull(pos);</b>
 &nbsp;
-<b class="nc">&nbsp;		for (IPosition p : positions) {</b>
-<b class="nc">&nbsp;			if (p.isAdjacentTo(pos)) {</b>
-<b class="nc">&nbsp;				return true;</b>
+<b class="fc">&nbsp;		for (IPosition p : positions) {</b>
+<b class="fc">&nbsp;			if (p.isAdjacentTo(pos)) {</b>
+<b class="fc">&nbsp;				return true;</b>
 &nbsp;			}
 &nbsp;		}
-<b class="nc">&nbsp;		return false;</b>
+<b class="fc">&nbsp;		return false;</b>
 &nbsp;	}
 &nbsp;
 &nbsp;	@Override
 &nbsp;	public void shoot(IPosition pos) {
-<b class="nc">&nbsp;		Objects.requireNonNull(pos);</b>
+<b class="fc">&nbsp;		Objects.requireNonNull(pos);</b>
 &nbsp;
-<b class="nc">&nbsp;		for (IPosition position : positions) {</b>
-<b class="nc">&nbsp;			if (position.equals(pos)) {</b>
-<b class="nc">&nbsp;				position.shoot();</b>
+<b class="fc">&nbsp;		for (IPosition position : positions) {</b>
+<b class="fc">&nbsp;			if (position.equals(pos)) {</b>
+<b class="fc">&nbsp;				position.shoot();</b>
 &nbsp;			}
 &nbsp;		}
 &nbsp;	}
 &nbsp;
 &nbsp;	@Override
 &nbsp;	public void sink() {
-<b class="nc">&nbsp;		for (IPosition position : positions) {</b>
-<b class="nc">&nbsp;			position.shoot();</b>
+<b class="fc">&nbsp;		for (IPosition position : positions) {</b>
+<b class="fc">&nbsp;			position.shoot();</b>
 &nbsp;		}
 &nbsp;	}
 &nbsp;
@@ -304,7 +304,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2026-04-29 15:22</div>
+    <div style="float:right;">generated on 2026-05-04 12:25</div>
 </div>
 </body>
 </html>
