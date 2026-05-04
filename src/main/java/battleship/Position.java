@@ -246,33 +246,16 @@ public class Position implements IPosition {
 		isHit = true;
 	}
 
-	/**
-	 * Compares this position to another object for equality.
-	 * Two positions are equal if their row and column coordinates are the same.
-	 *
-	 * @param otherPosition the object to compare
-	 * @return true if the positions are equal, false otherwise
-	 */
 	@Override
-	public boolean equals(Object otherPosition) {
-		if (this == otherPosition) {
-			return true;
-		}
-		if (otherPosition instanceof IPosition) {
-			IPosition other = (IPosition) otherPosition;
-			return this.row == other.getRow() && this.column == other.getColumn();
-		}
-		return false;
+	public boolean equals(Object o) {
+		if (o == null || getClass() != o.getClass()) return false;
+		Position position = (Position) o;
+		return row == position.row && column == position.column;
 	}
 
-	/**
-	 * Returns a hash code for this position based on its row and column.
-	 *
-	 * @return the hash code
-	 */
 	@Override
 	public int hashCode() {
-		return Objects.hash(row, column, isOccupied, isHit);
+		return Objects.hash(row, column);
 	}
 
 	/**
