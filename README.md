@@ -4,7 +4,7 @@ LINK DO YOUTUBE
 Aqui está o link de youtube para observar as novas funcionalidades!
     https://youtu.be/mw-U8kEjRbw
 
-![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
+[![Java CI with Maven](https://github.com/IGE-111722/Battleship2/actions/workflows/myFlow.yml/badge.svg)](https://github.com/IGE-111722/Battleship2/actions/workflows/myFlow.yml)
 ![Java Version](https://img.shields.io/badge/Java-17%2B-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
