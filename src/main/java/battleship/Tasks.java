@@ -233,10 +233,9 @@ public class Tasks {
 	 * @return The created ship based on the data that has been read
 	 */
 	public static Ship readShip(Scanner in) {
-
 		assert in != null;
-
-		String shipKind = in.next();
+		// Converte a palavra logo para minúsculas (ex: "Barca" -> "barca")
+		String shipKind = in.next().toLowerCase();
 		Position pos = readPosition(in);
 		char c = in.next().charAt(0);
 		Compass bearing = Compass.charToCompass(c);
